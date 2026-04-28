@@ -2,8 +2,6 @@ import { useState } from "react";
 import Login from "./components/Login.jsx";
 import StudentsList from "./components/StudentsList.jsx";
 import Dashboard from "./components/Dashboard";
-//import RegisterTeacher from "./components/RegisterTeacher";
-//import RegisterStudent from "./components/RegisterStudent";
 
 function App() {
     const [token, setToken] = useState(

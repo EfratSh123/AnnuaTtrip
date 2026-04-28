@@ -15,7 +15,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/tripDB')
   .catch(err => console.log(err));
 
 // Import routes
-const locationRoutes = require('./routes/locations');
+const locationRoutes = require("./routes/locations");
 const teacherRoutes = require('./routes/teachers');
 const studentRoutes = require('./routes/students');
 
@@ -27,8 +27,6 @@ app.use('/auth', authRoutes);
 app.use('/locations', locationRoutes);
 app.use('/teachers', teacherRoutes);
 app.use('/students', studentRoutes);
-
-
 
 // Run the server
 app.listen(5000, () => {
