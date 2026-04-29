@@ -36,16 +36,21 @@ router.post('/', async (req, res) => {
       Number(Coordinates.Longitude.Seconds)
     );
 
-    const location = new Location({
+      const updated = await Location.findOneAndUpdate(
+    { studentId: ID.toString() },
+    {
       studentId: ID.toString(),
       latitude,
       longitude,
       time: Time
-    });
-
-    await location.save();
-
-    res.status(201).json(location);
+    },
+    {
+      upsert: true,
+      new: true
+    }
+  );
+  
+  res.status(200).json(updated);
 
   } catch (error) {
     res.status(500).json({

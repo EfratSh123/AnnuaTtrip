@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 
 const LocationSchema = new mongoose.Schema({
-  studentId: {
-    type: String,
+  studentId: { 
+    type: String, 
+    unique: true,
     required: true
+
   },
   latitude: {
     type: Number,

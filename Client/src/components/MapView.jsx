@@ -31,74 +31,60 @@ export default function MapView() {
         return () => clearInterval(interval);
     }, []);
 
+    // 👉 חישוב מיקומים אחרונים לכל תלמידה (מבוצע פעם אחת)
+    const latestLocations = Object.values(
+        locations.reduce((acc, loc) => {
+            const existing = acc[loc.studentId];
+
+            if (!existing || new Date(loc.time) > new Date(existing.time)) {
+                acc[loc.studentId] = loc;
+            }
+
+            return acc;
+        }, {})
+    );
+
     // map hook to fit bounds to all markers
     function FitBounds({ locations }) {
-    const map = useMap();
+        const map = useMap();
 
-    useEffect(() => {
-        if (!locations.length) return;
+        useEffect(() => {
+            if (!locations.length) return;
 
-        const latestLocations = Object.values(
-    locations.reduce((acc, loc) => {
-        const existing = acc[loc.studentId];
+            const bounds = locations.map(loc => [
+                loc.latitude,
+                loc.longitude
+            ]);
 
-        if (
-            !existing ||
-            new Date(loc.time) > new Date(existing.time)
-        ) {
-            acc[loc.studentId] = loc;
-        }
+            map.fitBounds(bounds);
+        }, [locations, map]);
 
-        return acc;
-    }, {})
-    );
-    
-    const bounds = latestLocations.map(loc => [
-        loc.latitude,
-        loc.longitude
-    ]);
-
-        map.fitBounds(bounds);
-    }, [locations]);
-
-    return null;
-    }   
+        return null;
+    }
 
     return (
         <MapContainer
             center={[32.0853, 34.7818]} zoom={10}
             style={{ height: "500px", width: "100%" }}
         >
-            <FitBounds locations={locations} />
+            <FitBounds locations={latestLocations} />
+
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
-            {Object.values(
-    locations.reduce((acc, loc) => {
-        const existing = acc[loc.studentId];
-
-        if (
-            !existing ||
-            new Date(loc.time) > new Date(existing.time)
-        ) {
-            acc[loc.studentId] = loc;
-        }
-
-        return acc;
-            }, {})
-        ).map((loc) => (
-            <Marker
-                key={loc.studentId}
-                position={[loc.latitude, loc.longitude]}
-            >
-                <Popup>
-                    Student ID: {loc.studentId}
-                    <br />
-                    Time: {new Date(loc.time).toLocaleString()}
-                </Popup>
-            </Marker>
-        ))}
+            {latestLocations.map((loc) => (
+                <Marker
+                    key={loc.studentId}
+                    position={[loc.latitude, loc.longitude]}
+                >
+                    <Popup>
+                        Student ID: {loc.studentId}
+                        <br />
+                        Time: {new Date(loc.time).toLocaleString()}
+                    </Popup>
+                </Marker>
+            ))}
         </MapContainer>
     );
 }
