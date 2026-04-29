@@ -1,5 +1,5 @@
-function dmsToDecimal(d, m, s) {
-  return d + m / 60 + s / 3600;
+function dmsToDecimal(degrees, minutes, seconds) {
+  return degrees + minutes / 60 + seconds / 3600;
 }
 
 module.exports = { dmsToDecimal };

@@ -38,10 +38,25 @@ export default function MapView() {
     useEffect(() => {
         if (!locations.length) return;
 
-        const bounds = locations.map(loc => [
-            loc.latitude,
-            loc.longitude
-        ]);
+        const latestLocations = Object.values(
+    locations.reduce((acc, loc) => {
+        const existing = acc[loc.studentId];
+
+        if (
+            !existing ||
+            new Date(loc.time) > new Date(existing.time)
+        ) {
+            acc[loc.studentId] = loc;
+        }
+
+        return acc;
+    }, {})
+    );
+    
+    const bounds = latestLocations.map(loc => [
+        loc.latitude,
+        loc.longitude
+    ]);
 
         map.fitBounds(bounds);
     }, [locations]);
@@ -59,18 +74,31 @@ export default function MapView() {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
-            {locations.map((loc, i) => (
-                <Marker
-                    key={i}
-                    position={[loc.latitude, loc.longitude]}
-                >
-                    <Popup>
-                        Student ID: {loc.studentId}
-                        <br />
-                        Time: {loc.time}
-                    </Popup>
-                </Marker>
-            ))}
+            {Object.values(
+    locations.reduce((acc, loc) => {
+        const existing = acc[loc.studentId];
+
+        if (
+            !existing ||
+            new Date(loc.time) > new Date(existing.time)
+        ) {
+            acc[loc.studentId] = loc;
+        }
+
+        return acc;
+            }, {})
+        ).map((loc) => (
+            <Marker
+                key={loc.studentId}
+                position={[loc.latitude, loc.longitude]}
+            >
+                <Popup>
+                    Student ID: {loc.studentId}
+                    <br />
+                    Time: {new Date(loc.time).toLocaleString()}
+                </Popup>
+            </Marker>
+        ))}
         </MapContainer>
     );
 }

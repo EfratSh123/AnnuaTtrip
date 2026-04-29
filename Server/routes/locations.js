@@ -7,39 +7,40 @@ const { dmsToDecimal } = require('../utils/dms');
 
 // add a new student location
 router.post('/', async (req, res) => {
-try {
-    const { studentId, latitude, longitude, time } = req.body;
+  try {
+    const { ID, Coordinates, Time } = req.body;
 
-    // Validate the input data
     if (
-        !studentId ||
-        !latitude ||
-        !longitude ||
-        !time
-      ) {
-        return res.status(400).json({
-          message: "Invalid data"
-        });
-      }
-    
-    // Convert DMS to Decimal Degrees
-    const lat = dmsToDecimal(
-      +Coordinates.Latitude.Degrees,
-      +Coordinates.Latitude.Minutes,
-      +Coordinates.Latitude.Seconds
+      !ID ||
+      !Coordinates ||
+      !Coordinates.Latitude ||
+      !Coordinates.Longitude ||
+      !Time
+    ) {
+      return res.status(400).json({
+        message: "Invalid data"
+      });
+    }
+
+    // convert Latitude
+    const latitude = dmsToDecimal(
+      Number(Coordinates.Latitude.Degrees),
+      Number(Coordinates.Latitude.Minutes),
+      Number(Coordinates.Latitude.Seconds)
     );
 
-    const lon = dmsToDecimal(
-      +Coordinates.Longitude.Degrees,
-      +Coordinates.Longitude.Minutes,
-      +Coordinates.Longitude.Seconds
+    // convert Longitude
+    const longitude = dmsToDecimal(
+      Number(Coordinates.Longitude.Degrees),
+      Number(Coordinates.Longitude.Minutes),
+      Number(Coordinates.Longitude.Seconds)
     );
 
-     const location = new Location({
-        studentId,
-        latitude,
-        longitude,
-        time
+    const location = new Location({
+      studentId: ID.toString(),
+      latitude,
+      longitude,
+      time: Time
     });
 
     await location.save();
@@ -53,6 +54,7 @@ try {
   }
 });
 
+// get all student locations
 router.get('/', async (req, res) => {
   try {
     const locations = await Location.find();
