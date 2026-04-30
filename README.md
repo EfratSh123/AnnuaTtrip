@@ -69,15 +69,15 @@ node locationSimulator.js
 This script simulates real-time movement of students and continuously updates their locations in the database.
 
 # Main Features
-Teacher login system
-Student management by class
-Query system:
-All students in class
-All teachers
-Search by ID
-Live map with student locations
-Real-time location updates
-Automatic database updates from simulator
+- Teacher login system
+- Student management by class
+- Query system:
+- All students in class
+- All teachers
+- Search by ID
+- Live map with student locations
+- Real-time location updates
+- Automatic database updates from simulator
 
 # Screenshots
 
@@ -97,8 +97,8 @@ Automatic database updates from simulator
 ![RegisterTeacher](./Client/src/assets/RegisterTeacher.png)
 
 #Notes
-Authentication is handled using JWT
-Map updates automatically every few seconds
-Each student is identified by studentId
-Only the latest location per student is displayed
+- Authentication is handled using JWT
+- Map updates automatically every few seconds
+- Each student is identified by studentId
+- Only the latest location per student is displayed
 
