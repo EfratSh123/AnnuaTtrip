@@ -6,10 +6,7 @@ const Student = require('../models/Student');
 
 const router = express.Router();
 
-/**
- * Register a new teacher
- * POST /auth/register
- */
+/*Register a new teacher*/
 router.post('/register', async (req, res) => {
     try {
         const { firstName, lastName, idNumber, className, password } = req.body;
@@ -46,10 +43,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-/**
- * Login teacher
- * POST /auth/login
- */
+/*Login teacher*/
 router.post('/login', async (req, res) => {
     try {
         const { idNumber, password } = req.body;

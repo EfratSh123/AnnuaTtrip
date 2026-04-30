@@ -19,77 +19,99 @@ export default function QueryPanel({ token }) {
         const data = await getTeachers(token);
         setResults(data);
     }
-
+    
     async function handleStudentById() {
+        if (!searchId || !searchId.trim()) {
+            alert("Please enter an ID number");
+            return;
+        }
         const data = await getStudentById(searchId, token);
         setResults(data ? [data] : []);
     }
 
     async function handleTeacherById() {
+        if (!searchId || !searchId.trim()) {
+            alert("Please enter an ID number");
+            return;
+        }
         const data = await getTeacherById(searchId, token);
         setResults(data ? [data] : []);
     }
 
-    // מסנן שדות לא רצויים
+    // clean sensitive data before displaying
     function cleanData(item) {
-        if (item.password) delete item.password;
-        if (item._id) delete item._id;
-        return item;
+        const copy = { ...item };
+        delete copy.password;
+        delete copy._id;
+        delete copy.__v;
+        return copy;
     }
 
     const cleanedResults = results.map(cleanData);
 
+    // check if there is any data to display
+    const hasData = cleanedResults.length > 0;
+
+    // get columns from the first item (if exists) to display table headers
+    const columns = hasData ? Object.keys(cleanedResults[0]) : [];
+
     return (
         <div>
-            <h2>Queries</h2>
+            <h2 className="section-title">Queries</h2>
+            <div className="query-buttons">    
+                <button className="btn-primary-custom" onClick={handleMyStudents}>
+                    My Class Students
+                </button>
 
-            <button onClick={handleMyStudents}>
-                My Class Students
-            </button>
-
-            <button onClick={handleAllTeachers}>
-                All Teachers
-            </button>
-
+                <button className="btn-primary-custom" onClick={handleAllTeachers}>
+                    All Teachers
+                </button>
+            </div>
             <hr />
 
             <input
+                className="form-control-custom"
                 placeholder="Enter ID"
                 value={searchId}
                 onChange={(e) => setSearchId(e.target.value)}
             />
 
-            <button onClick={handleStudentById}>
+            <button className="btn-secondary-custom" onClick={handleStudentById}>
                 Find Student
             </button>
 
-            <button onClick={handleTeacherById}>
+            <button className="btn-secondary-custom" onClick={handleTeacherById}>
                 Find Teacher
             </button>
 
             <hr />
 
-            {/* ✅ טבלה במקום JSON */}
-            {cleanedResults.length > 0 && (
-                <table border="1" cellPadding="8">
-                    <thead>
-                        <tr>
-                            {Object.keys(cleanedResults[0]).map((key) => (
-                                <th key={key}>{key}</th>
-                            ))}
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {cleanedResults.map((item, i) => (
-                            <tr key={i}>
-                                {Object.values(item).map((val, j) => (
-                                    <td key={j}>{val}</td>
+            {hasData && (
+                <div className="table-container">
+                    <table className="table-custom">
+                        <thead>
+                            <tr>
+                                {columns.map((key) => (
+                                    <th key={key}>
+                                        {key.toUpperCase()}
+                                    </th>
                                 ))}
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+
+                        <tbody>
+                            {cleanedResults.map((item, i) => (
+                                <tr key={i}>
+                                    {columns.map((key) => (
+                                        <td key={key}>
+                                            {item[key]}
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             )}
         </div>
     );

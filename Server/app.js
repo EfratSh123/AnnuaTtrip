@@ -3,10 +3,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
 
-// Allows cross-origin requests (from React frontend)
+// Allows cross-origin requests
 app.use(cors());
-
-// Allows receiving JSON
 app.use(express.json());
 
 // Connect to MongoDB

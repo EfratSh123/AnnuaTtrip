@@ -6,6 +6,10 @@ export default function RegisterStudent() {
     const [className, setClassName] = useState("");
 
     async function register() {
+        if (!name || !id || !className) {
+            alert("Please fill all fields");
+            return;
+        }
         const res = await fetch(
             "http://localhost:5000/auth/register/student",
             {
@@ -36,25 +40,25 @@ export default function RegisterStudent() {
         <div>
             <h2>Register Student</h2>
 
-            <input
+            <input className="form-control-custom"
                 placeholder="Student Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
             />
 
-            <input
+            <input className="form-control-custom"
                 placeholder="Student ID"
                 value={id}
                 onChange={(e) => setId(e.target.value)}
             />
 
-            <input
+            <input className="form-control-custom"
                 placeholder="Class Name"
                 value={className}
                 onChange={(e) => setClassName(e.target.value)}
             />
 
-            <button onClick={register}>
+            <button className="btn-primary-custom" onClick={register}>
                 Register Student
             </button>
         </div>

@@ -9,18 +9,17 @@ export default function Dashboard({ token, onLogout }) {
     const [activeSection, setActiveSection] = useState("queries");
 
     return (
-        <div className="container-custom">
+        <div className="container-center" >
             {/* Header */}
             <div className="card-custom dashboard-header">
                 <div className="dashboard-header-content">
-                    <h1 className="page-title">
-                        School Management System
+                    <h1 className="page-title" className="dashboard-title">
+                        School Trip Management System
                     </h1>
 
                     <button
-                        className="btn-secondary-custom"
-                        onClick={onLogout}
-                    >
+                        className="btn-secondary-custom" 
+                        className="logout-fixed" onClick={onLogout}>
                         Logout
                     </button>
                 </div>
@@ -29,7 +28,7 @@ export default function Dashboard({ token, onLogout }) {
             {/* Navigation */}
             <div className="dashboard-tabs">
                 <button
-                    className={`dashboard-tab ${
+                    className={`btn-secondary-custom tab-btn ${
                         activeSection === "queries" ? "active" : ""
                     }`}
                     onClick={() => setActiveSection("queries")}
@@ -38,7 +37,7 @@ export default function Dashboard({ token, onLogout }) {
                 </button>
 
                 <button
-                    className={`dashboard-tab ${
+                    className={`btn-secondary-custom tab-btn ${
                         activeSection === "teacher" ? "active" : ""
                     }`}
                     onClick={() => setActiveSection("teacher")}
@@ -47,7 +46,7 @@ export default function Dashboard({ token, onLogout }) {
                 </button>
 
                 <button
-                    className={`dashboard-tab ${
+                    className={`btn-secondary-custom tab-btn ${
                         activeSection === "student" ? "active" : ""
                     }`}
                     onClick={() => setActiveSection("student")}
@@ -58,17 +57,19 @@ export default function Dashboard({ token, onLogout }) {
 
             {/* Content */}
             <div className="card-custom">
-                {activeSection === "queries" && (
-                    <QueryPanel token={token} />
-                )}
+                <div className="table-wrapper">
+                    {activeSection === "queries" && (
+                        <QueryPanel token={token} />
+                    )}
 
-                {activeSection === "teacher" && (
-                    <RegisterTeacher />
-                )}
+                    {activeSection === "teacher" && (
+                        <RegisterTeacher />
+                    )}
 
-                {activeSection === "student" && (
-                    <RegisterStudent />
-                )}
+                    {activeSection === "student" && (
+                        <RegisterStudent />
+                    )}
+                </div>
             </div>
         </div>
     );

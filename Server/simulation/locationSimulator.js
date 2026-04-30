@@ -10,7 +10,7 @@ function randomOffset() {
   return (Math.random() - 0.5) * 0.002;
 }
 
-// מreturns a list of unique studentIds that have location entries in the database
+// returns a list of unique studentIds that have location entries in the database
 async function getActiveStudents() {
   const students = await Location.distinct("studentId");
   return students;

@@ -7,7 +7,6 @@ const authMiddleware = require('../middleware/authMiddleware');
 router.post('/', authMiddleware, async (req, res) => {
   try {
     console.log("BODY RECEIVED:", req.body);
-    //const student = new Student(req.body);
     const { name, id, className } = req.body;
 
     if (!name || !id || !className) {
