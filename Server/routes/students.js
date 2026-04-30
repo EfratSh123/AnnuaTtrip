@@ -6,7 +6,20 @@ const authMiddleware = require('../middleware/authMiddleware');
 // Add student
 router.post('/', authMiddleware, async (req, res) => {
   try {
-    const student = new Student(req.body);
+    console.log("BODY RECEIVED:", req.body);
+    //const student = new Student(req.body);
+    const { name, id, className } = req.body;
+
+    if (!name || !id || !className) {
+      return res.status(400).json({ message: "Missing data" });
+    }
+    const student = new Student({
+      name,
+      id,
+      className
+    });
+    console.log("STUDENT CREATED:", student);
+
     await student.save();
     res.status(201).json(student);
   } catch (error) {
@@ -31,12 +44,11 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// Get student by ID (only from teacher's class)
+// Get student by ID
 router.get('/:id', authMiddleware, async (req, res) => {
   try {
     const student = await Student.findOne({
       id: req.params.id,
-      className: req.teacher.className
     });
 
     if (!student) {

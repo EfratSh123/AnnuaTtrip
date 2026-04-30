@@ -1,7 +1,12 @@
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
-import Login from "./components/Login.jsx";
-import StudentsList from "./components/StudentsList.jsx";
+
+import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
+import MapView from "./components/MapView";
+
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 
 function App() {
     const [token, setToken] = useState(
@@ -19,13 +24,36 @@ function App() {
     }
 
     return (
-        <div>
-            {!token ? (
-                <Login onLogin={handleLogin} />
-            ) : (
-                <Dashboard token={token} onLogout={handleLogout} />
-            )}
-        </div>
+        <BrowserRouter>
+            <Routes>
+                {}
+                <Route
+                    path="/map"
+                    element={<MapView />}
+                />
+
+                {}
+                <Route
+                    path="/"
+                    element={
+                        !token ? (
+                            <Login onLogin={handleLogin} />
+                        ) : (
+                            <Dashboard
+                                token={token}
+                                onLogout={handleLogout}
+                            />
+                        )
+                    }
+                />
+
+                {}
+                <Route
+                    path="*"
+                    element={<Navigate to="/" replace />}
+                />
+            </Routes>
+        </BrowserRouter>
     );
 }
 

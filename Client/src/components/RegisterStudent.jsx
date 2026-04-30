@@ -5,7 +5,6 @@ export default function RegisterStudent() {
     const [id, setId] = useState("");
     const [className, setClassName] = useState("");
 
-    // Register a new student
     async function register() {
         const res = await fetch(
             "http://localhost:5000/auth/register/student",
@@ -23,6 +22,12 @@ export default function RegisterStudent() {
         );
 
         const data = await res.json();
+
+        if (!res.ok) {
+            alert(data.message || "Error registering student");
+            return;
+        }
+
         alert("Student registered successfully!");
         console.log(data);
     }

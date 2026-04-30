@@ -1,61 +1,75 @@
+// Dashboard.jsx
+
+import { useState } from "react";
 import QueryPanel from "./QueryPanel";
 import RegisterTeacher from "./RegisterTeacher";
 import RegisterStudent from "./RegisterStudent";
-import { useState } from "react";
-import MapView from "./MapView";
 
 export default function Dashboard({ token, onLogout }) {
-    const [showMap, setShowMap] = useState(false);
-
-    const overlayStyle = {
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        background: "white",
-        zIndex: 1000,
-        padding: "20px",
-        overflow: "auto"
-    };
+    const [activeSection, setActiveSection] = useState("queries");
 
     return (
-        <div style={{ padding: "30px" }}>
-            <h1>School Management System</h1>
+        <div className="container-custom">
+            {/* Header */}
+            <div className="card-custom dashboard-header">
+                <div className="dashboard-header-content">
+                    <h1 className="page-title">
+                        School Management System
+                    </h1>
 
-            <button onClick={onLogout}>
-                Logout
-            </button>
-
-            <hr />
-
-            <QueryPanel token={token} />
-
-            <hr />
-
-            {/* כפתור פתיחת מפה */}
-            <button onClick={() => setShowMap(true)}>
-                Open Map
-            </button>
-
-            {/* מפה בחלון נפרד */}
-            {showMap && (
-                <div style={overlayStyle}>
-                    <button onClick={() => setShowMap(false)}>
-                        Close Map
+                    <button
+                        className="btn-secondary-custom"
+                        onClick={onLogout}
+                    >
+                        Logout
                     </button>
-
-                    <MapView />
                 </div>
-            )}
+            </div>
 
-            <hr />
+            {/* Navigation */}
+            <div className="dashboard-tabs">
+                <button
+                    className={`dashboard-tab ${
+                        activeSection === "queries" ? "active" : ""
+                    }`}
+                    onClick={() => setActiveSection("queries")}
+                >
+                    Queries
+                </button>
 
-            <RegisterTeacher />
+                <button
+                    className={`dashboard-tab ${
+                        activeSection === "teacher" ? "active" : ""
+                    }`}
+                    onClick={() => setActiveSection("teacher")}
+                >
+                    Register Teacher
+                </button>
 
-            <hr />
+                <button
+                    className={`dashboard-tab ${
+                        activeSection === "student" ? "active" : ""
+                    }`}
+                    onClick={() => setActiveSection("student")}
+                >
+                    Register Student
+                </button>
+            </div>
 
-            <RegisterStudent />
+            {/* Content */}
+            <div className="card-custom">
+                {activeSection === "queries" && (
+                    <QueryPanel token={token} />
+                )}
+
+                {activeSection === "teacher" && (
+                    <RegisterTeacher />
+                )}
+
+                {activeSection === "student" && (
+                    <RegisterStudent />
+                )}
+            </div>
         </div>
     );
 }

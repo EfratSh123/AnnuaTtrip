@@ -2,6 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { useEffect, useState } from "react";
 import { useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import { Link } from "react-router-dom";
 
 // Fix leaflet's default icon URLs
 import L from 'leaflet';
@@ -31,7 +32,7 @@ export default function MapView() {
         return () => clearInterval(interval);
     }, []);
 
-    // 👉 חישוב מיקומים אחרונים לכל תלמידה (מבוצע פעם אחת)
+    // Get the latest location for each student
     const latestLocations = Object.values(
         locations.reduce((acc, loc) => {
             const existing = acc[loc.studentId];
@@ -63,28 +64,58 @@ export default function MapView() {
     }
 
     return (
-        <MapContainer
-            center={[32.0853, 34.7818]} zoom={10}
-            style={{ height: "500px", width: "100%" }}
-        >
-            <FitBounds locations={latestLocations} />
+    <div className="container-custom">
+        <div className="card-custom">
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "20px"
+                }}
+            >
+                <h1 className="page-title">
+                    Live Student Locations
+                </h1>
 
-            <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-
-            {latestLocations.map((loc) => (
-                <Marker
-                    key={loc.studentId}
-                    position={[loc.latitude, loc.longitude]}
+                <Link
+                    to="/"
+                    className="btn-secondary-custom"
                 >
-                    <Popup>
-                        Student ID: {loc.studentId}
-                        <br />
-                        Time: {new Date(loc.time).toLocaleString()}
-                    </Popup>
-                </Marker>
-            ))}
-        </MapContainer>
-    );
-}
+                    Back to Home
+                </Link>
+            </div>
+
+            <MapContainer
+                center={[32.0853, 34.7818]}
+                zoom={10}
+            >
+                <FitBounds locations={latestLocations} />
+
+                <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+
+                {latestLocations.map((loc) => (
+                    <Marker
+                        key={loc.studentId}
+                        position={[
+                            loc.latitude,
+                            loc.longitude
+                        ]}
+                    >
+                        <Popup>
+                            Student ID: {loc.studentId}
+                            <br />
+                            Time:{" "}
+                            {new Date(
+                                loc.time
+                            ).toLocaleString()}
+                        </Popup>
+                    </Marker>
+                ))}
+            </MapContainer>
+        </div>
+    </div>
+)
+};

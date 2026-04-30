@@ -30,6 +30,15 @@ export default function QueryPanel({ token }) {
         setResults(data ? [data] : []);
     }
 
+    // מסנן שדות לא רצויים
+    function cleanData(item) {
+        if (item.password) delete item.password;
+        if (item._id) delete item._id;
+        return item;
+    }
+
+    const cleanedResults = results.map(cleanData);
+
     return (
         <div>
             <h2>Queries</h2>
@@ -60,9 +69,28 @@ export default function QueryPanel({ token }) {
 
             <hr />
 
-            <pre>
-                {JSON.stringify(results, null, 2)}
-            </pre>
+            {/* ✅ טבלה במקום JSON */}
+            {cleanedResults.length > 0 && (
+                <table border="1" cellPadding="8">
+                    <thead>
+                        <tr>
+                            {Object.keys(cleanedResults[0]).map((key) => (
+                                <th key={key}>{key}</th>
+                            ))}
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {cleanedResults.map((item, i) => (
+                            <tr key={i}>
+                                {Object.values(item).map((val, j) => (
+                                    <td key={j}>{val}</td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
         </div>
     );
 }
