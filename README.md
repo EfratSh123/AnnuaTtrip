@@ -35,27 +35,36 @@ Inside the `server` folder:
 
 ```bash
 node app.js
+```
 
 The server runs on:
 
+```bash
 http://localhost:5000
+```
 
 ## 2. Run the Client
 
 Inside the client folder:
 
+```bash
 npm install
 npm run dev
+```
 
 The frontend runs on:
 
+```bash
 http://localhost:5173
+```
 
 ## 3. Run Location Simulation (Optional)
 
 Inside the server folder:
 
+```bash
 node locationSimulator.js
+```
 
 This script simulates real-time movement of students and continuously updates their locations in the database.
 
@@ -73,19 +82,19 @@ Automatic database updates from simulator
 # Screenshots
 
 ### Login Page
-![Login](client/AnnuaTtrip\Client\src\assets\login.png)
+![Login](./Client/src/assets/login.png)
 
 ### Dashboard
-![Dashboard](client/AnnuaTtrip\Client\src\assets\dashboard.png)
+![Dashboard](./Client/src/assets/dashboard.png)
 
 ### Map
-![Map](client/AnnuaTtrip\Client\src\assets\map.png)
+![Map](./Client/src/assets/map.png)
 
 ### Register Student
-![RegisterStudent](client/AnnuaTtrip\Client\src\assets\RegisterStudent.png)
+![RegisterStudent](./Client/src/assets/RegisterStudent.png)
 
 ### Register Teacher
-![RegisterTeacher](client/AnnuaTtrip\Client\src\assets\RegisterTeacher.png)
+![RegisterTeacher](./Client/src/assets/RegisterTeacher.png)
 
 #Notes
 Authentication is handled using JWT
